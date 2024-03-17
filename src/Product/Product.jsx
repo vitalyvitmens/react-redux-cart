@@ -1,8 +1,13 @@
-import { memo, useContext } from 'react'
-import { ProductsContext } from '../ProductsContext'
+import { memo } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  decreaseQuantityActionCreator,
+  increaseQuantityActionCreator,
+} from '../redux/action'
 
 export const Product = memo(({ product }) => {
-  const { increaseQuantity, decreaseQuantity } = useContext(ProductsContext)
+  const dispatch = useDispatch()
+
   return (
     <li className="product">
       <div className="product-preview">
@@ -18,13 +23,13 @@ export const Product = memo(({ product }) => {
       <div className="product-interactions">
         <div
           className="button plus"
-          onClick={() => increaseQuantity(product.id)}
+          onClick={() => dispatch(increaseQuantityActionCreator(product.id))}
         >
           +
         </div>
         <div
           className="button minus"
-          onClick={() => decreaseQuantity(product.id)}
+          onClick={() => dispatch(decreaseQuantityActionCreator(product.id))}
         >
           -
         </div>

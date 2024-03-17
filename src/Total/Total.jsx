@@ -1,8 +1,30 @@
-import { useContext } from 'react'
-import { ProductsContext } from '../ProductsContext'
+import { useSelector } from 'react-redux'
+import { createSelector } from 'reselect'
+import { round } from '../utils'
+
+// Создаем мемоизированный селектор
+const selectTotal = createSelector(
+  (state) => state.products,
+  (products) => {
+    const subtotal = products.reduce(
+      (acc, product) => acc + product.price * product.quantity,
+      0
+    )
+    const tax = subtotal * 0.13
+    const total = subtotal + tax
+
+    return {
+      subtotal: round(subtotal),
+      tax: round(tax),
+      total: round(total),
+    }
+  }
+)
 
 export function Total() {
-  const { total } = useContext(ProductsContext)
+  // Используем мемоизированный селектор в useSelector
+  const total = useSelector(selectTotal)
+
   return (
     <table className="bill">
       <tbody>
